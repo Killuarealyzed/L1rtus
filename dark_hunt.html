@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Охота на темных</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card-bg: #151520;
+      --text: #e6e6ff;
+      --accent: #a07cff;
+      --border: #3a3a5a;
+      --input-bg: #1e1e2e;
+      --btn-bg: #2a2a4a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      margin-bottom: 25px;
+    }
+    .back {
+      display: block;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .lang-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      min-width: 36px;
+      text-align: center;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--accent);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 12px 0 40px; /* ← увеличенный отступ */
+      text-shadow: 0 0 14px rgba(160, 124, 255, 0.7);
+    }
+
+    .form {
+      max-width: 500px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 10px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+      font-size: 1.1rem;
+    }
+    .result p {
+      margin: 6px 0;
+    }
+    .result strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back">← Back</a>
+  <div class="lang-buttons">
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">GB</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="fr">FR</button>
+  </div>
+</div>
+
+<h2 data-key="title">Охота на темных</h2>
+
+<div class="form">
+  <div class="field">
+    <label data-key="items100">Предметы по 100 ОД каждый:</label>
+    <input type="number" id="i100" value="" oninput="calc()">
+  </div>
+  <div class="field">
+    <label data-key="items500">Предметы по 500 ОД каждый:</label>
+    <input type="number" id="i500" value="" oninput="calc()">
+  </div>
+  <div class="field">
+    <label data-key="items1000">Предметы по 1000 ОД каждый:</label>
+    <input type="number" id="i1000" value="" oninput="calc()">
+  </div>
+  <div class="field">
+    <label data-key="levelRange">Выберите диапазон уровней противника:</label>
+    <select id="range" onchange="calc()">
+      <option value="1000" selected data-key="range1">Уровни 1–6 (1000 очков за отряд)</option>
+      <option value="1500" data-key="range2">Уровни 7–10 (1500 очков за отряд)</option>
+      <option value="2000" data-key="range3">Уровни 11–15 (2000 очков за отряд)</option>
+      <option value="2500" data-key="range4">Уровни 16–20 (2500 очков за отряд)</option>
+      <option value="3000" data-key="range5">Уровень 21+ (3000 очков за отряд)</option>
+    </select>
+  </div>
+
+  <div class="result">
+    <p><span data-key="totalAP">Всего ОД:</span> <strong id="ap">0</strong></p>
+    <p><span data-key="totalPower">Общая мощь:</span> <strong id="power">0</strong></p>
+  </div>
+</div>
+
+<script>
+  const translations = {
+    ru: {
+      title: "Охота на темных",
+      items100: "Предметы по 100 ОД каждый:",
+      items500: "Предметы по 500 ОД каждый:",
+      items1000: "Предметы по 1000 ОД каждый:",
+      levelRange: "Выберите диапазон уровней противника:",
+      range1: "Уровни 1–6 (1000 очков за отряд)",
+      range2: "Уровни 7–10 (1500 очков за отряд)",
+      range3: "Уровни 11–15 (2000 очков за отряд)",
+      range4: "Уровни 16–20 (2500 очков за отряд)",
+      range5: "Уровень 21+ (3000 очков за отряд)",
+      totalAP: "Всего ОД:",
+      totalPower: "Общая мощь:"
+    },
+    en: {
+      title: "Hunting the Dark",
+      items100: "Items worth 100 AP each:",
+      items500: "Items worth 500 AP each:",
+      items1000: "Items worth 1000 AP each:",
+      levelRange: "Select enemy level range:",
+      range1: "Levels 1–6 (1000 pts per squad)",
+      range2: "Levels 7–10 (1500 pts per squad)",
+      range3: "Levels 11–15 (2000 pts per squad)",
+      range4: "Levels 16–20 (2500 pts per squad)",
+      range5: "Level 21+ (3000 pts per squad)",
+      totalAP: "Total AP:",
+      totalPower: "Total Power:"
+    },
+    es: {
+      title: "Caza de los Oscuros",
+      items100: "Objetos de 100 PA cada uno:",
+      items500: "Objetos de 500 PA cada uno:",
+      items1000: "Objetos de 1000 PA cada uno:",
+      levelRange: "Seleccione rango de niveles enemigos:",
+      range1: "Niveles 1–6 (1000 pts por escuadrón)",
+      range2: "Niveles 7–10 (1500 pts por escuadrón)",
+      range3: "Niveles 11–15 (2000 pts por escuadrón)",
+      range4: "Niveles 16–20 (2500 pts por escuadrón)",
+      range5: "Nivel 21+ (3000 pts por escuadrón)",
+      totalAP: "Total de PA:",
+      totalPower: "Poder total:"
+    },
+    fr: {
+      title: "Chasse aux Ténèbres",
+      items100: "Objets valant 100 PA chacun :",
+      items500: "Objets valant 500 PA chacun :",
+      items1000: "Objets valant 1000 PA chacun :",
+      levelRange: "Sélectionnez la plage de niveaux ennemis :",
+      range1: "Niveaux 1–6 (1000 pts par escouade)",
+      range2: "Niveaux 7–10 (1500 pts par escouade)",
+      range3: "Niveaux 11–15 (2000 pts par escouade)",
+      range4: "Niveaux 16–20 (2500 pts par escouade)",
+      range5: "Niveau 21+ (3000 pts par escouade)",
+      totalAP: "Total des PA :",
+      totalPower: "Puissance totale :"
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'ru';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    calc();
+  }
+
+  function calc() {
+    const v100 = parseInt(document.getElementById('i100').value) || 0;
+    const v500 = parseInt(document.getElementById('i500').value) || 0;
+    const v1000 = parseInt(document.getElementById('i1000').value) || 0;
+    const pts = parseInt(document.getElementById('range').value) || 1000;
+
+    const totalAP = v100 * 100 + v500 * 500 + v1000 * 1000;
+    const squads = totalAP / 50;
+    const power = Math.floor(squads * pts);
+
+    document.getElementById('ap').textContent = totalAP.toLocaleString();
+    document.getElementById('power').textContent = power.toLocaleString();
+  }
+
+  window.onload = () => {
+    setLanguage(currentLang);
+    calc();
+  };
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+</script>
+</body>
+</html>

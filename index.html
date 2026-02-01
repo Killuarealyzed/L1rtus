@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>L1rtus Helper</title>
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card-bg: #151520;
+      --text: #e6e6ff;
+      --accent: #a07cff;
+      --border: #3a3a5a;
+      --hover: #2a2a4a;
+      --footer-text: #ccc;
+      --desc-bg: rgba(21, 21, 32, 0.5);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* Заголовок */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 30px;
+      margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-size: 5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-shadow: 0 0 20px rgba(160, 124, 255, 0.6);
+      margin: 0;
+    }
+    .hero p {
+      font-size: 1.4rem;
+      max-width: 800px;
+      margin: 20px auto;
+      opacity: 0.9;
+    }
+
+    /* Разделительная линия под заголовком */
+    .divider {
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 30px auto;
+    }
+
+    /* Языки — только флаги */
+    .lang-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 15px;
+    }
+    .lang-btn {
+      background: none;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 6px 12px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+    .lang-btn:hover,
+    .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    /* Блоки */
+    .blocks {
+      display: flex;
+      flex-direction: column;
+      gap: 70px;
+      margin: 0 auto;
+      width: 90%;
+      max-width: 1400px;
+    }
+
+    .block-row {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      flex-wrap: wrap;
+    }
+
+    .block {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    /* Стиль для изображений (вместо пунктирного прямоугольника) */
+    .placeholder {
+      width: 100%;
+      height: 320px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--text);
+      opacity: 0.75;
+      cursor: pointer;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Декор по углам */
+    .placeholder::before,
+    .placeholder::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+    }
+    .placeholder::before {
+      top: -2px;
+      left: -2px;
+      border-bottom: none;
+      border-right: none;
+    }
+    .placeholder::after {
+      bottom: -2px;
+      right: -2px;
+      border-top: none;
+      border-left: none;
+    }
+
+    .placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    .placeholder:hover {
+      border-color: var(--accent);
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    .placeholder:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Описание — усиленная читаемость */
+    .desc {
+      background: var(--desc-bg);
+      padding: 25px;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+    }
+    .desc h3 {
+      color: var(--accent);
+      font-size: 2.1rem;
+      margin-bottom: 18px;
+      font-weight: 700;
+    }
+    .desc p {
+      line-height: 1.7;
+      font-size: 1.25rem;
+      opacity: 0.95;
+    }
+
+    /* Сдвиг правого блока вправо */
+    .block-row:nth-child(2) .block:last-child {
+      margin-left: auto;
+      max-width: 480px;
+    }
+
+    /* Футер */
+    footer {
+      text-align: center;
+      margin-top: 120px;
+      padding-top: 50px;
+      border-top: 1px solid var(--border);
+      color: var(--footer-text);
+      font-size: 1.8rem;
+      line-height: 1.8;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 3.2rem; }
+      .block-row { flex-direction: column; }
+      .block-row:nth-child(2) .block:last-child {
+        margin-left: 0;
+      }
+      .placeholder { height: 260px; }
+      .desc h3 { font-size: 1.8rem; }
+      .desc p { font-size: 1.15rem; }
+      footer { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>L1rtus Helper</h1>
+  <p data-key="homeDesc">Helper for players and researchers of the Call of Dragons world</p>
+  <div class="lang-switcher" id="langSwitcher"></div>
+</div>
+
+<div class="divider"></div>
+
+<div class="blocks">
+  <!-- Блок 1 -->
+  <div class="block-row">
+    <div class="block">
+      <div class="placeholder" onclick="window.location.href='counter.html'">
+        <img src="assets/counter-bg.jpg" alt="Счётчик войск">
+      </div>
+    </div>
+    <div class="block desc">
+      <h3 data-key="counterTitle">Счётчик войск</h3>
+      <p data-key="descCounter">Данный счётчик войск поможет вам рассчитать затраты по ресурсам, ускорениям, а также покажет точное количество очков, которые вы сможете получить на сильнейшем лорде.</p>
+    </div>
+  </div>
+
+  <!-- Блок 2 -->
+  <div class="block-row">
+    <div class="block desc">
+      <h3 data-key="huntTitle">Охота на темных</h3>
+      <p data-key="descHunt">Данный счётчик подскажет вам, сколько всего у вас Очков Действий (ОД), и, выбрав диапазон уровней отрядов темных, которых вы будете убивать, скажет, сколько очков вы получите на сильнейшем лорде.</p>
+    </div>
+    <div class="block">
+      <div class="placeholder" onclick="window.location.href='dark_hunt.html'">
+        <img src="assets/hunt-bg.jpg" alt="Охота на темных">
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>📧</strong> <a href="mailto:l1rtuswork09@gmail.com">l1rtuswork09@gmail.com</a></p>
+  <p><strong>💰</strong> <a href="https://yoomoney.ru/to/4100118522546322" target="_blank" data-key="support">Support the project</a></p>
+</footer>
+
+<script>
+  const translations = {
+    ru: {
+      counterTitle: "Счётчик войск",
+      huntTitle: "Охота на темных",
+      descCounter: "Данный счётчик войск поможет вам рассчитать затраты по ресурсам, ускорениям, а также покажет точное количество очков, которые вы сможете получить на сильнейшем лорде.",
+      descHunt: "Данный счётчик подскажет вам, сколько всего у вас Очков Действий (ОД), и, выбрав диапазон уровней отрядов темных, которых вы будете убивать, скажет, сколько очков вы получите на сильнейшем лорде.",
+      homeDesc: "Помощник для игроков и исследователей мира Call of Dragons",
+      support: "Поддержать проект"
+    },
+    en: {
+      counterTitle: "Troop Counter",
+      huntTitle: "Hunting the Dark",
+      descCounter: "This troop counter helps you calculate resource costs, speedups, and shows the exact power points you can get on the strongest lord.",
+      descHunt: "This calculator shows your total Action Points (AP), and by selecting the enemy squad level range you plan to hunt, it calculates the power you’ll get on the strongest lord.",
+      homeDesc: "Helper for players and researchers of the Call of Dragons world",
+      support: "Support the project"
+    },
+    es: {
+      counterTitle: "Contador de tropas",
+      huntTitle: "Caza de los Oscuros",
+      descCounter: "Este contador de tropas le ayuda a calcular los costos de recursos, aceleraciones y muestra los puntos de poder exactos que puede obtener en el señor más fuerte.",
+      descHunt: "Esta herramienta le indica cuántos Puntos de Acción (PA) tiene en total, y al seleccionar el rango de niveles de los escuadrones oscuros que planea cazar, calcula la potencia que obtendrá en el señor más fuerte.",
+      homeDesc: "Ayudante para jugadores e investigadores del mundo de Call of Dragons",
+      support: "Apoyar el proyecto"
+    },
+    fr: {
+      counterTitle: "Compteur de troupes",
+      huntTitle: "Chasse aux Ténèbres",
+      descCounter: "Ce compteur de troupes vous aide à calculer les coûts en ressources, les accélérations, et affiche les points de puissance exacts que vous pouvez obtenir sur le seigneur le plus fort.",
+      descHunt: "Cet outil calcule vos Points d'Action (PA) totaux, et en sélectionnant la plage de niveaux des escouades sombres que vous souhaitez chasser, il détermine la puissance que vous obtiendrez sur le seigneur le plus fort.",
+      homeDesc: "Assistant pour joueurs et chercheurs du monde de Call of Dragons",
+      support: "Soutenir le projet"
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+    updateLangButtons();
+  }
+
+  function updateLangButtons() {
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === currentLang);
+    });
+  }
+
+  function initLangSwitcher() {
+    const langs = [
+      { code: 'ru', name: '🇷🇺' },
+      { code: 'en', name: '🇬🇧' },
+      { code: 'es', name: '🇪🇸' },
+      { code: 'fr', name: '🇫🇷' }
+    ];
+    const container = document.getElementById('langSwitcher');
+    langs.forEach(l => {
+      const btn = document.createElement('button');
+      btn.className = 'lang-btn';
+      btn.dataset.lang = l.code;
+      btn.textContent = l.name;
+      btn.onclick = () => setLanguage(l.code);
+      container.appendChild(btn);
+    });
+    setLanguage(currentLang);
+  }
+
+  window.onload = initLangSwitcher;
+</script>
+
+</body>
+</html>

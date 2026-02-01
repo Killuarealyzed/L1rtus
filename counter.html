@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Счётчик войск</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card-bg: #151520;
+      --text: #e6e6ff;
+      --accent: #a07cff;
+      --border: #3a3a5a;
+      --input-bg: #1e1e2e;
+      --btn-bg: #2a2a4a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .header {
+      margin-bottom: 25px;
+    }
+    .back {
+      display: block;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .lang-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    .lang-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 4px;
+      min-width: 36px;
+      text-align: center;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--accent);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 12px 0 40px; /* ← увеличенный отступ */
+      text-shadow: 0 0 14px rgba(160, 124, 255, 0.7);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card h3 {
+      text-align: center;
+      color: var(--accent);
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+    .field select, .field input {
+      width: 100%;
+      padding: 10px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .results {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 1.05rem;
+    }
+    .results p {
+      margin: 5px 0;
+    }
+    .results strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back">← Back</a>
+  <div class="lang-buttons">
+    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-btn" data-lang="en">GB</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="fr">FR</button>
+  </div>
+</div>
+
+<h2 data-key="title">Счётчик войск</h2>
+
+<div class="grid">
+  <!-- T3 → T4 -->
+  <div class="card">
+    <h3>T3 → T4</h3>
+    <div class="field">
+      <label data-key="troopType">Тип войск:</label>
+      <select id="type-t3" onchange="calc('t3')">
+        <option value="infantry" data-key="infantry">Пехота</option>
+        <option value="cavalry" data-key="cavalry">Кавалерия</option>
+        <option value="archers" data-key="archers">Лучники</option>
+        <option value="mages" data-key="mages">Маги</option>
+        <option value="air" data-key="air">Воздух</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-key="count">Количество:</label>
+      <input type="number" id="count-t3" min="0" value="" oninput="calc('t3')">
+    </div>
+    <div class="results">
+      <p><span data-key="gold">Золото:</span> <strong id="g-t3">0</strong></p>
+      <p><span data-key="wood">Дерево:</span> <strong id="w-t3">0</strong></p>
+      <p><span data-key="stone">Камень:</span> <strong id="s-t3">0</strong></p>
+      <p><span data-key="mana">Мана:</span> <strong id="m-t3">0</strong></p>
+      <p><span data-key="time">Время:</span> <strong id="t-t3">0d 0h 0m 0s</strong></p>
+      <p><span data-key="power">Сила:</span> <strong id="p-t3">0</strong></p>
+    </div>
+  </div>
+
+  <!-- T4 -->
+  <div class="card">
+    <h3>T4</h3>
+    <div class="field">
+      <label data-key="troopType">Тип войск:</label>
+      <select id="type-t4" onchange="calc('t4')">
+        <option value="infantry" data-key="infantry">Пехота</option>
+        <option value="cavalry" data-key="cavalry">Кавалерия</option>
+        <option value="archers" data-key="archers">Лучники</option>
+        <option value="mages" data-key="mages">Маги</option>
+        <option value="air" data-key="air">Воздух</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-key="count">Количество:</label>
+      <input type="number" id="count-t4" min="0" value="" oninput="calc('t4')">
+    </div>
+    <div class="results">
+      <p><span data-key="gold">Золото:</span> <strong id="g-t4">0</strong></p>
+      <p><span data-key="wood">Дерево:</span> <strong id="w-t4">0</strong></p>
+      <p><span data-key="stone">Камень:</span> <strong id="s-t4">0</strong></p>
+      <p><span data-key="mana">Мана:</span> <strong id="m-t4">0</strong></p>
+      <p><span data-key="time">Время:</span> <strong id="t-t4">0d 0h 0m 0s</strong></p>
+      <p><span data-key="power">Сила:</span> <strong id="p-t4">0</strong></p>
+    </div>
+  </div>
+
+  <!-- T4 → T5 -->
+  <div class="card">
+    <h3>T4 → T5</h3>
+    <div class="field">
+      <label data-key="troopType">Тип войск:</label>
+      <select id="type-t5a" onchange="calc('t5a')">
+        <option value="infantry" data-key="infantry">Пехота</option>
+        <option value="cavalry" data-key="cavalry">Кавалерия</option>
+        <option value="archers" data-key="archers">Лучники</option>
+        <option value="mages" data-key="mages">Маги</option>
+        <option value="air" data-key="air">Воздух</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-key="count">Количество:</label>
+      <input type="number" id="count-t5a" min="0" value="" oninput="calc('t5a')">
+    </div>
+    <div class="results">
+      <p><span data-key="gold">Золото:</span> <strong id="g-t5a">0</strong></p>
+      <p><span data-key="wood">Дерево:</span> <strong id="w-t5a">0</strong></p>
+      <p><span data-key="stone">Камень:</span> <strong id="s-t5a">0</strong></p>
+      <p><span data-key="mana">Мана:</span> <strong id="m-t5a">0</strong></p>
+      <p><span data-key="time">Время:</span> <strong id="t-t5a">0d 0h 0m 0s</strong></p>
+      <p><span data-key="power">Сила:</span> <strong id="p-t5a">0</strong></p>
+    </div>
+  </div>
+
+  <!-- T5 -->
+  <div class="card">
+    <h3>T5</h3>
+    <div class="field">
+      <label data-key="troopType">Тип войск:</label>
+      <select id="type-t5" onchange="calc('t5')">
+        <option value="infantry" data-key="infantry">Пехота</option>
+        <option value="cavalry" data-key="cavalry">Кавалерия</option>
+        <option value="archers" data-key="archers">Лучники</option>
+        <option value="mages" data-key="mages">Маги</option>
+        <option value="air" data-key="air">Воздух</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-key="count">Количество:</label>
+      <input type="number" id="count-t5" min="0" value="" oninput="calc('t5')">
+    </div>
+    <div class="results">
+      <p><span data-key="gold">Золото:</span> <strong id="g-t5">0</strong></p>
+      <p><span data-key="wood">Дерево:</span> <strong id="w-t5">0</strong></p>
+      <p><span data-key="stone">Камень:</span> <strong id="s-t5">0</strong></p>
+      <p><span data-key="mana">Мана:</span> <strong id="m-t5">0</strong></p>
+      <p><span data-key="time">Время:</span> <strong id="t-t5">0d 0h 0m 0s</strong></p>
+      <p><span data-key="power">Сила:</span> <strong id="p-t5">0</strong></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const costs = {
+    t3: {
+      infantry: { g: 150, w: 150, s: 0, m: 70, t: 20, p: 20 },
+      cavalry: { g: 90, w: 90, s: 90, m: 70, t: 20, p: 20 },
+      archers: { g: 50, w: 113, s: 0, m: 70, t: 20, p: 20 },
+      mages: { g: 300, w: 50, s: 20, m: 70, t: 20, p: 20 },
+      air: { g: 90, w: 90, s: 90, m: 70, t: 20, p: 20 }
+    },
+    t4: {
+      infantry: { g: 300, w: 300, s: 0, m: 100, t: 60, p: 40 },
+      cavalry: { g: 180, w: 180, s: 180, m: 100, t: 60, p: 40 },
+      archers: { g: 300, w: 0, s: 225, m: 100, t: 60, p: 40 },
+      mages: { g: 0, w: 300, s: 225, m: 100, t: 60, p: 40 },
+      air: { g: 180, w: 180, s: 180, m: 100, t: 60, p: 40 }
+    },
+    t5a: {
+      infantry: { g: 500, w: 500, s: 0, m: 300, t: 40, p: 60 },
+      cavalry: { g: 300, w: 300, s: 300, m: 300, t: 40, p: 60 },
+      archers: { g: 500, w: 0, s: 375, m: 300, t: 40, p: 60 },
+      mages: { g: 0, w: 500, s: 375, m: 300, t: 40, p: 60 },
+      air: { g: 300, w: 300, s: 300, m: 300, t: 40, p: 60 }
+    },
+    t5: {
+      infantry: { g: 800, w: 800, s: 0, m: 400, t: 90, p: 100 },
+      cavalry: { g: 480, w: 480, s: 480, m: 400, t: 90, p: 100 },
+      archers: { g: 800, w: 0, s: 600, m: 400, t: 90, p: 100 },
+      mages: { g: 0, w: 800, s: 600, m: 400, t: 90, p: 100 },
+      air: { g: 480, w: 480, s: 480, m: 400, t: 90, p: 100 }
+    }
+  };
+
+  const translations = {
+    ru: {
+      title: "Счётчик войск",
+      troopType: "Тип войск:",
+      count: "Количество:",
+      infantry: "Пехота",
+      cavalry: "Кавалерия",
+      archers: "Лучники",
+      mages: "Маги",
+      air: "Воздух",
+      gold: "Золото:",
+      wood: "Дерево:",
+      stone: "Камень:",
+      mana: "Мана:",
+      time: "Время:",
+      power: "Сила:"
+    },
+    en: {
+      title: "Troop Counter",
+      troopType: "Troop Type:",
+      count: "Count:",
+      infantry: "Infantry",
+      cavalry: "Cavalry",
+      archers: "Archers",
+      mages: "Mages",
+      air: "Air",
+      gold: "Gold:",
+      wood: "Wood:",
+      stone: "Stone:",
+      mana: "Mana:",
+      time: "Time:",
+      power: "Power Sl:"
+    },
+    es: {
+      title: "Contador de tropas",
+      troopType: "Tipo de tropa:",
+      count: "Cantidad:",
+      infantry: "Infantería",
+      cavalry: "Caballería",
+      archers: "Arqueros",
+      mages: "Magos",
+      air: "Aéreo",
+      gold: "Oro:",
+      wood: "Madera:",
+      stone: "Piedra:",
+      mana: "Maná:",
+      time: "Tiempo:",
+      power: "Poder:"
+    },
+    fr: {
+      title: "Compteur de troupes",
+      troopType: "Type de troupe :",
+      count: "Quantité :",
+      infantry: "Infanterie",
+      cavalry: "Cavalerie",
+      archers: "Archers",
+      mages: "Mages",
+      air: "Aérien",
+      gold: "Or:",
+      wood: "Bois:",
+      stone: "Pierre:",
+      mana: "Mana:",
+      time: "Temps:",
+      power: "Puissance:"
+    }
+  };
+
+  let currentLang = localStorage.getItem('lang') || 'ru';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    ['t3', 't4', 't5a', 't5'].forEach(id => calc(id));
+  }
+
+  function formatNumber(n) {
+    return n.toFixed(n % 1 === 0 ? 0 : 1).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function formatTime(seconds) {
+    const d = Math.floor(seconds / 86400);
+    const h = Math.floor((seconds % 86400) / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${d}d ${h}h ${m}m ${s}s`;
+  }
+
+  function calc(id) {
+    const type = document.getElementById(`type-${id}`).value;
+    const count = parseInt(document.getElementById(`count-${id}`).value) || 0;
+    const c = costs[id][type];
+
+    if (!c) return;
+
+    document.getElementById(`g-${id}`).textContent = formatNumber(c.g * count);
+    document.getElementById(`w-${id}`).textContent = formatNumber(c.w * count);
+    document.getElementById(`s-${id}`).textContent = formatNumber(c.s * count);
+    document.getElementById(`m-${id}`).textContent = formatNumber(c.m * count);
+    document.getElementById(`t-${id}`).textContent = formatTime(c.t * count);
+    document.getElementById(`p-${id}`).textContent = formatNumber(c.p * count);
+  }
+
+  window.onload = () => {
+    setLanguage(currentLang);
+    ['t3', 't4', 't5a', 't5'].forEach(id => calc(id));
+  };
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+  });
+</script>
+</body>
+</html>
