@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>L1rtus Helper</title>
-  <link rel="icon" href="assets/favicon.png" type="image/png">
   <style>
     :root {
       --bg: #0a0a0f;
@@ -27,45 +26,37 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      padding: 20px;
+      padding: 0 20px;
       min-height: 100vh;
     }
 
-    /* Заголовок */
     .hero {
       text-align: center;
-      padding: 60px 20px 30px;
-      margin-bottom: 40px;
+      padding: 40px 20px 20px;
+      margin-bottom: 30px;
     }
     .hero h1 {
-      font-size: 5rem;
+      font-size: 6.5rem;
       font-weight: 800;
       letter-spacing: 2px;
       color: var(--accent);
       text-shadow: 0 0 20px rgba(160, 124, 255, 0.6);
       margin: 0;
+      line-height: 1;
     }
     .hero p {
-      font-size: 1.4rem;
-      max-width: 800px;
-      margin: 20px auto;
+      font-size: 1.8rem;
+      max-width: 900px;
+      margin: 16px auto;
       opacity: 0.9;
+      line-height: 1.4;
     }
 
-    /* Разделительная линия под заголовком */
-    .divider {
-      width: 80%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      margin: 30px auto;
-    }
-
-    /* Языки — только флаги */
     .lang-switcher {
       display: flex;
       justify-content: center;
       gap: 14px;
-      margin-top: 15px;
+      margin: 12px 0 20px;
     }
     .lang-btn {
       background: none;
@@ -81,13 +72,27 @@
     .lang-btn.active {
       background: var(--accent);
       color: #000;
+      font-weight: bold;
     }
 
-    /* Блоки */
+    .divider {
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 0 auto 40px;
+    }
+
+    .page {
+      display: none;
+    }
+    .page.active {
+      display: block;
+    }
+
     .blocks {
       display: flex;
       flex-direction: column;
-      gap: 70px;
+      gap: 60px;
       margin: 0 auto;
       width: 90%;
       max-width: 1400px;
@@ -105,65 +110,33 @@
       min-width: 320px;
     }
 
-    /* Стиль для изображений (вместо пунктирного прямоугольника) */
     .placeholder {
       width: 100%;
       height: 320px;
       background: var(--card-bg);
-      border: 1px solid var(--border);
+      border: 2px solid var(--border);
       border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      color: var(--text);
-      opacity: 0.75;
       cursor: pointer;
       transition: all 0.4s;
       position: relative;
       overflow: hidden;
     }
-
-    /* Декор по углам */
-    .placeholder::before,
-    .placeholder::after {
+    .placeholder::before {
       content: "";
       position: absolute;
-      width: 22px;
-      height: 22px;
-      border: 2px solid var(--accent);
-      border-radius: 4px;
-    }
-    .placeholder::before {
-      top: -2px;
-      left: -2px;
-      border-bottom: none;
-      border-right: none;
-    }
-    .placeholder::after {
-      bottom: -2px;
-      right: -2px;
-      border-top: none;
-      border-left: none;
-    }
-
-    .placeholder img {
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
     }
-
     .placeholder:hover {
       border-color: var(--accent);
-      opacity: 1;
-      transform: scale(1.02);
-    }
-    .placeholder:hover img {
-      transform: scale(1.1);
+      transform: translateY(-2px);
     }
 
-    /* Описание — усиленная читаемость */
     .desc {
       background: var(--desc-bg);
       padding: 25px;
@@ -182,17 +155,43 @@
       opacity: 0.95;
     }
 
-    /* Сдвиг правого блока вправо */
-    .block-row:nth-child(2) .block:last-child {
-      margin-left: auto;
-      max-width: 480px;
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .nav-btn:hover {
+      background: var(--hover);
+      border-color: var(--accent);
+    }
+    .nav-btn.active {
+      background: var(--accent);
+      border-color: #000;
+      color: #000;
+      transform: scale(1.15);
+      box-shadow: 0 0 10px rgba(160, 124, 255, 0.7);
     }
 
-    /* Футер */
     footer {
       text-align: center;
-      margin-top: 120px;
-      padding-top: 50px;
+      margin: 40px 0 20px;
+      padding: 30px 0;
       border-top: 1px solid var(--border);
       color: var(--footer-text);
       font-size: 1.8rem;
@@ -208,15 +207,11 @@
     }
 
     @media (max-width: 768px) {
-      .hero h1 { font-size: 3.2rem; }
+      .hero h1 { font-size: 4.2rem; }
+      .hero p { font-size: 1.4rem; }
       .block-row { flex-direction: column; }
-      .block-row:nth-child(2) .block:last-child {
-        margin-left: 0;
-      }
-      .placeholder { height: 260px; }
-      .desc h3 { font-size: 1.8rem; }
-      .desc p { font-size: 1.15rem; }
-      footer { font-size: 1.4rem; }
+      .nav-buttons { gap: 16px; }
+      .nav-btn { width: 36px; height: 36px; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -230,72 +225,142 @@
 
 <div class="divider"></div>
 
-<div class="blocks">
-  <!-- Блок 1 -->
-  <div class="block-row">
-    <div class="block">
-      <div class="placeholder" onclick="window.location.href='counter.html'">
-        <img src="assets/counter-bg.jpg" alt="Счётчик войск">
+<!-- Страница 1 -->
+<div class="page active" id="page-1">
+  <div class="blocks">
+    <div class="block-row">
+      <div class="block">
+        <div class="placeholder"
+             style="background-image: url(assets/counter-bg.jpg);"
+             onclick="window.location.href='counter.html'">
+        </div>
+      </div>
+      <div class="block desc">
+        <h3 data-key="counterTitle">Счётчик войск</h3>
+        <p data-key="descCounter">Данный счётчик войск поможет вам рассчитать затраты по ресурсам, ускорениям, а также покажет точное количество очков, которые вы сможете получить на сильнейшем лорде.</p>
       </div>
     </div>
-    <div class="block desc">
-      <h3 data-key="counterTitle">Счётчик войск</h3>
-      <p data-key="descCounter">Данный счётчик войск поможет вам рассчитать затраты по ресурсам, ускорениям, а также покажет точное количество очков, которые вы сможете получить на сильнейшем лорде.</p>
-    </div>
-  </div>
 
-  <!-- Блок 2 -->
-  <div class="block-row">
-    <div class="block desc">
-      <h3 data-key="huntTitle">Охота на темных</h3>
-      <p data-key="descHunt">Данный счётчик подскажет вам, сколько всего у вас Очков Действий (ОД), и, выбрав диапазон уровней отрядов темных, которых вы будете убивать, скажет, сколько очков вы получите на сильнейшем лорде.</p>
-    </div>
-    <div class="block">
-      <div class="placeholder" onclick="window.location.href='dark_hunt.html'">
-        <img src="assets/hunt-bg.jpg" alt="Охота на темных">
+    <div class="block-row">
+      <div class="block desc">
+        <h3 data-key="huntTitle">Охота на темных</h3>
+        <p data-key="descHunt">Данный счётчик подскажет вам, сколько всего у вас Очков Действий (ОД), и, выбрав диапазон уровней отрядов темных, которых вы будете убивать, скажет, сколько очков вы получите на сильнейшем лорде.</p>
+      </div>
+      <div class="block">
+        <div class="placeholder"
+             style="background-image: url(assets/hunt-bg.jpg);"
+             onclick="window.location.href='dark_hunt.html'">
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Страница 2 -->
+<div class="page" id="page-2">
+  <div class="blocks">
+    <div class="block-row">
+      <div class="block">
+        <div class="placeholder"
+             style="background-image: url(assets/commander-bg.jpg);"
+             onclick="window.location.href='commander_shards.html'">
+        </div>
+      </div>
+      <div class="block desc">
+        <h3 data-key="shardsTitle">Счётчик осколков</h3>
+        <p data-key="descShards">Рассчитайте количество осколков, необходимых для прокачки эпических и легендарных командиров до нужного уровня.</p>
+      </div>
+    </div>
+
+    <div class="block-row">
+      <div class="block desc">
+        <h3 data-key="comingSoon">В разработке</h3>
+        <p data-key="comingSoonDesc">Новые инструменты и функции появятся в ближайшее время. Следите за обновлениями!</p>
+      </div>
+      <div class="block">
+        <div class="placeholder" style="background-color: var(--card-bg);"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nav-buttons">
+  <div class="nav-btn active" data-page="1">1</div>
+  <div class="nav-btn" data-page="2">2</div>
+</div>
+
 <footer>
   <p><strong>📧</strong> <a href="mailto:l1rtuswork09@gmail.com">l1rtuswork09@gmail.com</a></p>
-  <p><strong>💰</strong> <a href="https://yoomoney.ru/to/4100118522546322" target="_blank" data-key="support">Support the project</a></p>
+  <p><strong>💰</strong> <a href="https://yoomoney.ru/to/4100118522546322" target="_blank" data-key="supportYooMoney">Support the project (YooMoney)</a></p>
+  <p><strong>❤️</strong> <a href="https://www.donationalerts.com/r/lirtus" target="_blank" data-key="supportDA">Support via DonationAlerts</a></p>
 </footer>
 
 <script>
   const translations = {
     ru: {
+      homeDesc: "Помощник для игроков и исследователей мира Call of Dragons",
       counterTitle: "Счётчик войск",
       huntTitle: "Охота на темных",
+      shardsTitle: "Счётчик осколков",
+      comingSoon: "В разработке",
       descCounter: "Данный счётчик войск поможет вам рассчитать затраты по ресурсам, ускорениям, а также покажет точное количество очков, которые вы сможете получить на сильнейшем лорде.",
       descHunt: "Данный счётчик подскажет вам, сколько всего у вас Очков Действий (ОД), и, выбрав диапазон уровней отрядов темных, которых вы будете убивать, скажет, сколько очков вы получите на сильнейшем лорде.",
-      homeDesc: "Помощник для игроков и исследователей мира Call of Dragons",
-      support: "Поддержать проект"
+      descShards: "Рассчитайте количество осколков, необходимых для прокачки эпических и легендарных командиров до нужного уровня.",
+      comingSoonDesc: "Новые инструменты и функции появятся в ближайшее время. Следите за обновлениями!",
+      supportYooMoney: "Поддержать проект (ЮMoney)",
+      supportDA: "Поддержать через DonationAlerts"
     },
     en: {
+      homeDesc: "Helper for players and researchers of the Call of Dragons world",
       counterTitle: "Troop Counter",
       huntTitle: "Hunting the Dark",
+      shardsTitle: "Commander Shards",
+      comingSoon: "Coming Soon",
       descCounter: "This troop counter helps you calculate resource costs, speedups, and shows the exact power points you can get on the strongest lord.",
       descHunt: "This calculator shows your total Action Points (AP), and by selecting the enemy squad level range you plan to hunt, it calculates the power you’ll get on the strongest lord.",
-      homeDesc: "Helper for players and researchers of the Call of Dragons world",
-      support: "Support the project"
+      descShards: "Calculate the number of shards needed to upgrade your Epic and Legendary commanders.",
+      comingSoonDesc: "New tools and features will be available soon. Stay tuned!",
+      supportYooMoney: "Support the project (YooMoney)",
+      supportDA: "Support via DonationAlerts"
     },
     es: {
+      homeDesc: "Ayudante para jugadores e investigadores del mundo de Call of Dragons",
       counterTitle: "Contador de tropas",
       huntTitle: "Caza de los Oscuros",
+      shardsTitle: "Fragmentos de Comandantes",
+      comingSoon: "Próximamente",
       descCounter: "Este contador de tropas le ayuda a calcular los costos de recursos, aceleraciones y muestra los puntos de poder exactos que puede obtener en el señor más fuerte.",
       descHunt: "Esta herramienta le indica cuántos Puntos de Acción (PA) tiene en total, y al seleccionar el rango de niveles de los escuadrones oscuros que planea cazar, calcula la potencia que obtendrá en el señor más fuerte.",
-      homeDesc: "Ayudante para jugadores e investigadores del mundo de Call of Dragons",
-      support: "Apoyar el proyecto"
+      descShards: "Calcule la cantidad de fragmentos necesarios para mejorar a sus comandantes épicos y legendarios.",
+      comingSoonDesc: "Nuevas herramientas y funciones estarán disponibles pronto. ¡Manténgase atento!",
+      supportYooMoney: "Apoyar el proyecto (YooMoney)",
+      supportDA: "Apoyar mediante DonationAlerts"
     },
     fr: {
+      homeDesc: "Assistant pour joueurs et chercheurs du monde de Call of Dragons",
       counterTitle: "Compteur de troupes",
       huntTitle: "Chasse aux Ténèbres",
+      shardsTitle: "Fragments de Commandants",
+      comingSoon: "À venir",
       descCounter: "Ce compteur de troupes vous aide à calculer les coûts en ressources, les accélérations, et affiche les points de puissance exacts que vous pouvez obtenir sur le seigneur le plus fort.",
       descHunt: "Cet outil calcule vos Points d'Action (PA) totaux, et en sélectionnant la plage de niveaux des escouades sombres que vous souhaitez chasser, il détermine la puissance que vous obtiendrez sur le seigneur le plus fort.",
-      homeDesc: "Assistant pour joueurs et chercheurs du monde de Call of Dragons",
-      support: "Soutenir le projet"
+      descShards: "Calculez le nombre de fragments nécessaires pour améliorer vos commandants épiques et légendaires.",
+      comingSoonDesc: "De nouveaux outils et fonctionnalités seront bientôt disponibles. Restez à l’écoute !",
+      supportYooMoney: "Soutenir le projet (YooMoney)",
+      supportDA: "Soutenir via DonationAlerts"
+    },
+    ko: {
+      homeDesc: "콜 오브 드래곤즈(Call of Dragons) 세계의 플레이어 및 연구자를 위한 도우미",
+      counterTitle: "병력 계산기",
+      huntTitle: "어둠의 사냥",
+      shardsTitle: "지휘관 조각 계산기",
+      comingSoon: "준비 중",
+      descCounter: "이 병력 계산기는 자원 소모량과 가속치를 계산하고, 최강 군주에서 얻을 수 있는 정확한 전투력을 보여줍니다.",
+      descHunt: "이 계산기는 총 행동 포인트(AP)를 알려주며, 사냥할 어둠의 부대 레벨 범위를 선택하면 최강 군주에서 얻을 전투력을 계산합니다.",
+      descShards: "에픽 및 레전더리 지휘관을 원하는 레벨까지 강화하는 데 필요한 조각 수를 계산하세요.",
+      comingSoonDesc: "새로운 도구와 기능이 곧 출시됩니다. 업데이트를 기다려주세요!",
+      supportYooMoney: "프로젝트 지원하기 (YooMoney)",
+      supportDA: "DonationAlerts로 지원하기"
     }
   };
 
@@ -304,42 +369,60 @@
   function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('lang', lang);
+
     document.querySelectorAll('[data-key]').forEach(el => {
       const key = el.getAttribute('data-key');
       if (translations[lang] && translations[lang][key]) {
         el.textContent = translations[lang][key];
       }
     });
-    updateLangButtons();
-  }
 
-  function updateLangButtons() {
     document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === currentLang);
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    updateNavButtons();
+  }
+
+  function showPage(pageNum) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(`page-${pageNum}`).classList.add('active');
+    updateNavButtons();
+  }
+
+  function updateNavButtons() {
+    const activePage = document.querySelector('.page.active').id.replace('page-', '');
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.page === activePage);
     });
   }
 
-  function initLangSwitcher() {
-    const langs = [
-      { code: 'ru', name: '🇷🇺' },
-      { code: 'en', name: '🇬🇧' },
-      { code: 'es', name: '🇪🇸' },
-      { code: 'fr', name: '🇫🇷' }
-    ];
-    const container = document.getElementById('langSwitcher');
-    langs.forEach(l => {
-      const btn = document.createElement('button');
-      btn.className = 'lang-btn';
-      btn.dataset.lang = l.code;
-      btn.textContent = l.name;
-      btn.onclick = () => setLanguage(l.code);
-      container.appendChild(btn);
-    });
+  window.onload = () => {
     setLanguage(currentLang);
-  }
 
-  window.onload = initLangSwitcher;
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => showPage(btn.dataset.page));
+    });
+
+    showPage(1);
+  };
+
+  const langs = [
+    { code: 'ru', name: '🇷🇺' },
+    { code: 'en', name: '🇬🇧' },
+    { code: 'es', name: '🇪🇸' },
+    { code: 'fr', name: '🇫🇷' },
+    { code: 'ko', name: '🇰🇷' }
+  ];
+  const container = document.getElementById('langSwitcher');
+  langs.forEach(l => {
+    const btn = document.createElement('button');
+    btn.className = 'lang-btn';
+    btn.dataset.lang = l.code;
+    btn.textContent = l.name;
+    btn.onclick = () => setLanguage(l.code);
+    container.appendChild(btn);
+  });
 </script>
-
 </body>
 </html>
